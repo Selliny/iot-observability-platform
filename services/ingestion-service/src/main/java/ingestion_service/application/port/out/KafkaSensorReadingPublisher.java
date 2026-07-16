@@ -13,7 +13,7 @@ public class KafkaSensorReadingPublisher implements SensorReadingPublisher {
     private final String topicName;
 
     public KafkaSensorReadingPublisher(KafkaTemplate<String, KafkaSensorReadingEvent> kafkaTemplate,
-            @Value("${app.kafka.topics.sensor-readings}") String topicName) {
+            @Value("${app.kafka.topics.sensor-readings.name}") String topicName) {
         this.kafkaTemplate = kafkaTemplate;
         this.topicName = topicName;
     }

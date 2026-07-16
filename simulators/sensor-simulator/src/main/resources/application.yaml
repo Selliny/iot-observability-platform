@@ -1,3 +1,31 @@
 spring:
   application:
     name: sensor-simulator
+
+app:
+  mqtt:
+    broker-url: ${MQTT_BROKER_URL:tcp://localhost:1883}
+    client-id: ${MQTT_CLIENT_ID:sensor-simulator}
+    connection-timeout-seconds: 10
+    keep-alive-seconds: 30
+    qos: 1
+    topic-pattern: iot/{tenantId}/{plantId}/{lineId}/{machineId}/{sensorId}/readings
+
+  simulator:
+    tenant-id: ${SIMULATOR_TENANT_ID:tenant-01}
+    plant-id: ${SIMULATOR_PLANT_ID:plant-01}
+    line-id: ${SIMULATOR_LINE_ID:line-01}
+    machine-id: ${SIMULATOR_MACHINE_ID:machine-01}
+    sensor-id: ${SIMULATOR_SENSOR_ID:sensor-01}
+    interval-ms: 5000
+
+server:
+  port: 8082
+  
+management:
+  endpoints:
+    web:
+      exposure:
+        include:
+          - health
+          - info

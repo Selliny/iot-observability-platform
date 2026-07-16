@@ -18,7 +18,11 @@ spring:
 app:
   kafka:
     topics:
-      sensor-readings: iot.sensor-readings.v1
+      sensor-readings:
+        name: iot.sensor-readings.v1
+        partitions: 3
+        replication-factor: 1
+        retention: 3d
 
 server:
   port: 8081
