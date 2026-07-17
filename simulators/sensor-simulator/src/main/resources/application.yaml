@@ -6,6 +6,8 @@ app:
   mqtt:
     broker-url: ${MQTT_BROKER_URL:tcp://localhost:1883}
     client-id: ${MQTT_CLIENT_ID:sensor-simulator}
+    username: ${MQTT_USERNAME:mqttkafka}
+    password: ${MQTT_PASSWORD:123}
     connection-timeout-seconds: 10
     keep-alive-seconds: 30
     qos: 1
@@ -20,7 +22,7 @@ app:
     interval-ms: 5000
 
 server:
-  port: 8082
+  port: 8090
   
 management:
   endpoints:

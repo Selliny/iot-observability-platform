@@ -7,7 +7,7 @@ spring:
 
     producer:
       key-serializer: org.apache.kafka.common.serialization.StringSerializer
-      value-serializer: org.springframework.kafka.support.serializer.JsonSerializer
+      value-serializer: org.springframework.kafka.support.serializer.JacksonJsonSerializer
 
       properties:
         enable.idempotence: true
@@ -24,6 +24,20 @@ app:
         replication-factor: 1
         retention: 3d
 
+      rejected-sensor-messages:
+        name: iot.sensor-readings.invalid.v1
+        partitions: 3
+        replication-factor: 1
+        retention: 7d
+
+  mqtt:
+    broker-url: ${MQTT_BROKER_URL:tcp://localhost:1883}
+    client-id: ${MQTT_CLIENT_ID:ingestion-service}
+    topic: iot/+/+/+/+/+/readings
+    qos: 1
+    connection-timeout-seconds: 10
+    keep-alive-seconds: 30
+
 server:
   port: 8081
 
@@ -36,6 +50,7 @@ management:
           - info
           - metrics
           - prometheus
+          - integrationgraph
 
   endpoint:
     health:

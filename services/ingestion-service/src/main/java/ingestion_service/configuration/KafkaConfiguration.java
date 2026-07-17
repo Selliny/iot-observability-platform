@@ -7,6 +7,7 @@ import org.springframework.kafka.core.DefaultKafkaProducerFactory;
 import org.springframework.kafka.core.KafkaTemplate;
 import org.springframework.kafka.core.ProducerFactory;
 
+import ingestion_service.adapters.out.kafka.KafkaRejectedSensorMessageEvent;
 import ingestion_service.application.port.out.KafkaSensorReadingEvent;
 
 @Configuration
@@ -21,5 +22,17 @@ public class KafkaConfiguration {
     public KafkaTemplate<String, KafkaSensorReadingEvent> sensorReadingKafkaTemplate(
             ProducerFactory<String, KafkaSensorReadingEvent> sensorReadingProducerFactory) {
         return new KafkaTemplate<>(sensorReadingProducerFactory);
+    }
+
+    @Bean
+    public ProducerFactory<String, KafkaRejectedSensorMessageEvent> rejectedSensorMessageProducerFactory(
+            KafkaProperties kafkaProperties) {
+        return new DefaultKafkaProducerFactory<>(kafkaProperties.buildProducerProperties());
+    }
+
+    @Bean
+    public KafkaTemplate<String, KafkaRejectedSensorMessageEvent> rejectedSensorMessageKafkaTemplate(
+            ProducerFactory<String, KafkaRejectedSensorMessageEvent> rejectedSensorMessageProducerFactory) {
+        return new KafkaTemplate<>(rejectedSensorMessageProducerFactory);
     }
 }

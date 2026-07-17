@@ -1,0 +1,12 @@
+package ingestion_service.domain.model;
+
+public enum RejectionReason {
+    INVALID_JSON,
+    INVALID_MQTT_TOPIC,
+    TOPIC_PAYLOAD_MISMATCH,
+    UNSUPPORTED_SCHEMA_VERSION,
+    INVALID_CONTRACT,
+    INVALID_DOMAIN_DATA,
+    PUBLICATION_FAILURE,
+    UNEXPECTED_ERROR
+}

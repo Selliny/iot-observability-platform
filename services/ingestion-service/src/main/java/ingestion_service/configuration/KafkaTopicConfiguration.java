@@ -27,4 +27,22 @@ public class KafkaTopicConfiguration {
                         "delete"))
                 .build();
     }
+
+    @Bean
+    public NewTopic rejectedSensorMessagesTopic(
+            @Value("${app.kafka.topics.rejected-sensor-messages.name}") String topicName,
+            @Value("${app.kafka.topics.rejected-sensor-messages.partitions}") int partitions,
+            @Value("${app.kafka.topics.rejected-sensor-messages.replication-factor}") short replicationFactor,
+            @Value("${app.kafka.topics.rejected-sensor-messages.retention}") Duration retention) {
+        return TopicBuilder
+                .name(topicName)
+                .partitions(partitions)
+                .replicas(replicationFactor)
+                .configs(Map.of(
+                        "retention.ms",
+                        String.valueOf(retention.toMillis()),
+                        "cleanup.policy",
+                        "delete"))
+                .build();
+    }
 }
