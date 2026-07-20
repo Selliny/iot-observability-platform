@@ -13,7 +13,7 @@ public class MqttTopicParser {
     private static final int SensorIndex = 5;
     private static final int EventTypeIndex = 6;
     private static final String ExpectedRoot = "iot";
-    private static final String ExpectedEventType = "sensor-readings";
+    private static final String ExpectedEventType = "readings";
 
     public MqttTopicIdentity parse(String topic) {
         if (topic == null || topic.isBlank()) {

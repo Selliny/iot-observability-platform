@@ -52,11 +52,26 @@ public class MqttSensorReadingHandler {
         String payload = String.valueOf(message.getPayload());
         String topic = message.getHeaders().get("mqtt_receivedTopic", String.class);
 
+        MqttTopicIdentity topicIdentity;
+        try {
+            topicIdentity = topicParser.parse(topic);
+        } catch (InvalidMqttTopicException exception) {
+            reject("INVALID_MQTT_TOPIC", exception.getMessage(), payload, topic);
+            return;
+        }
+
         MqttSensorReadingPayload mqttPayload;
         try {
             mqttPayload = objectMapper.readValue(payload, MqttSensorReadingPayload.class);
         } catch (Exception exception) {
             reject("INVALID_JSON", exception.getMessage(), payload, topic);
+            return;
+        }
+
+        try {
+            topicPayloadValidator.validate(topicIdentity, mqttPayload);
+        } catch (MqttTopicPayloadMismatchException exception) {
+            reject("TOPIC_PAYLOAD_MISMATCH", exception.getMessage(), payload, topic);
             return;
         }
 
