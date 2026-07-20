@@ -1,3 +1,56 @@
 spring:
   application:
     name: processing-service
+
+  datasource:
+    url: ${DATABASE_URL:jdbc:postgresql://localhost:5433/iot_observability}
+    username: ${DATABASE_USERNAME:iot_user}
+    password: ${DATABASE_PASSWORD:iot_password}
+
+  flyway:
+    enabled: true
+    schemas:
+      - processing
+    default-schema: processing
+
+  kafka:
+    bootstrap-servers: ${KAFKA_BOOTSTRAP_SERVERS:localhost:9092}
+
+    consumer:
+      group-id: processing-service-v1
+      auto-offset-reset: earliest
+      enable-auto-commit: false
+
+      key-deserializer: org.apache.kafka.common.serialization.StringDeserializer
+      value-deserializer: org.springframework.kafka.support.serializer.JacksonJsonDeserializer
+
+      properties:
+        spring.json.trusted.packages: >-
+          processing_service.adapters.in.kafka
+        spring.json.use.type.headers: false
+        spring.json.value.default.type: >-
+          processing_service.adapters.in.kafka.KafkaSensorReadingEvent
+
+    listener:
+      ack-mode: record
+
+app:
+  kafka:
+    topics:
+      sensor-readings: iot.sensor-readings.v1
+
+    consumer:
+      group-id: processing-service-v1
+
+server:
+  port: 8085
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include:
+          - health
+          - info
+          - metrics
+          - prometheus
