@@ -1,5 +1,7 @@
 package processing_service.adapters.out.persistence;
 
+import java.time.ZoneOffset;
+
 import org.springframework.jdbc.core.simple.JdbcClient;
 import org.springframework.stereotype.Repository;
 import processing_service.application.port.out.SensorReadingRepository;
@@ -27,9 +29,9 @@ public class JdbcSensorReadingRepository implements SensorReadingRepository {
                 .param("value", reading.value())
                 .param("unit", reading.unit())
                 .param("sequenceNumber", reading.sequenceNumber())
-                .param("occurredAt", reading.occurredAt())
-                .param("ingestedAt", reading.ingestedAt())
-                .param("processedAt", reading.processedAt())
+                .param("occurredAt", reading.occurredAt().atOffset(ZoneOffset.UTC))
+                .param("ingestedAt", reading.ingestedAt().atOffset(ZoneOffset.UTC))
+                .param("processedAt", reading.processedAt().atOffset(ZoneOffset.UTC))
                 .update();
     }
 }

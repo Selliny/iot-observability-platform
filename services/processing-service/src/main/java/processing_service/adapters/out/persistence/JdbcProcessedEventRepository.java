@@ -1,6 +1,7 @@
 package processing_service.adapters.out.persistence;
 
 import java.time.Instant;
+import java.time.ZoneOffset;
 
 import org.springframework.jdbc.core.simple.JdbcClient;
 import org.springframework.stereotype.Repository;
@@ -24,7 +25,7 @@ public class JdbcProcessedEventRepository implements ProcessedEventRepository {
                 .param("topicName", topic)
                 .param("partitionNumber", partition)
                 .param("kafkaOffset", offset)
-                .param("processedAt", processedAt)
+                .param("processedAt", processedAt.atOffset(ZoneOffset.UTC))
                 .update();
         return rowsAffected == 1;
     }
