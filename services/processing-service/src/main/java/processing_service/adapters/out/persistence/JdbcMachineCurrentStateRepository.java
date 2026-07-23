@@ -37,7 +37,7 @@ public class JdbcMachineCurrentStateRepository implements MachineCurrentStateRep
                         """)
                 .param("tenantId", state.tenantId())
                 .param("machineId", state.machineId())
-                .param("currentState", state.status().name())
+                .param("currentStatus", state.status().name())
                 .param("stateSince", state.stateSince())
                 .param("lastEventId", state.lastEventId())
                 .param(
